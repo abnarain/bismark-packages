@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=bismark-passive-git-tmpfs
 PKG_VERSION:=head
-PKG_RELEASE:=6
+PKG_RELEASE:=7
 
 GIT_URL:=git://github.com/sburnett/bismark-passive.git
 
@@ -23,6 +23,9 @@ MAKE_FLAGS += UPDATE_INTERVAL=$(CONFIG_BISMARK_PASSIVE_UPDATE_INTERVAL)
 MAKE_FLAGS += BUILD_ID=$(BISMARK_PASSIVE_BUILDID)
 ifeq ($(CONFIG_BISMARK_PASSIVE_FREQUENT_UPDATES),y)
 MAKE_FLAGS += FREQUENT_UPDATES=yes
+endif
+ifeq ($(CONFIG_BISMARK_PASSIVE_HTTP_URL),y)
+MAKE_FLAGS += ENABLE_HTTP_URL=yes
 endif
 
 define Package/bismark-passive-git-tmpfs

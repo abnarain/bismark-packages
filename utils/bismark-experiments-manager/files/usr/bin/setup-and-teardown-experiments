@@ -1,38 +1,95 @@
-#!/bin/sh
+#!/usr/bin/env lua
 
-. /etc/functions.sh
+require("io")
+require("uci")
+require('bmlua.set')
+local set = bmlua.set
+require('bmlua.opkg')
+local opkg = bmlua.opkg
+require('bmlua.uci')
+require('nixio.fs')
 
-packages_to_install_root=
-packages_to_install_tmpfs=
-packages_to_remove=
+local EXPERIMENTS_CONFIG = "bismark-experiments"
+local EXPERIMENTS_CACHE = "/var/bismark-experiments"
 
-load_experiment() {
-	local cfg="$1"
-	
-	local installed
-	config_get_bool installed "$cfg" installed
+local get_managed_repositories = function()
+    local repositories = set.Set()
+    for repository in nixio.fs.dir(EXPERIMENTS_CACHE) do
+        repositories:add(repository)
+    end
+    return repositories:intersection(opkg.get_package_lists())
+end
 
-	local packages
-	config_get packages "$cfg" package
-	packages_tmpfs=`echo $packages | tr ' ' '\n' | awk '/-tmpfs$/'`
-	packages_root=`echo $packages | tr ' ' '\n' | awk '$0 !~ /-tmpfs$/'`
+local load_experiments = function(cursor, candidate_packages)
+    local installed_packages = set.Set()
+    local config = cursor:get_all(EXPERIMENTS_CONFIG)
+    if config ~= nil then
+        for _, section in pairs(config) do
+            if section[".type"] == "experiment"
+                    and section.installed == '1'
+                    and section.package ~= nil then
+                installed_packages:update(set.from_array(section.package))
+            end
+        end
+    end
+    return installed_packages:intersection(candidate_packages)
+end
 
-    if [ "$installed" == "0" ]; then
-        packages_to_remove="$packages_to_remove $packages"
-    else
-        packages_to_install_tmpfs="$packages_to_install_tmpfs $packages_tmpfs"
-        packages_to_install_root="$packages_to_install_root $packages_root"
-    fi
-}
+-- Check for conflicting experiments and remove one of
+-- them if both are marked for installation.
+local remove_conflicting_experiments = function(cursor)
+    local experiments_config = cursor:get_all(EXPERIMENTS_CONFIG)
+    if experiments_config ~= nil then
+        for name, experiment in pairs(experiments_config) do
+            if experiment.conflicts ~= nil then
+                for _, conflict in pairs(experiment.conflicts) do
+                    local installed = cursor:get(
+                            EXPERIMENTS_CONFIG, name, 'installed')
+                    local conflict_installed =
+                            cursor:get(EXPERIMENTS_CONFIG, conflict, 'installed')
+                    if bmlua.uci.parse_bool(installed)
+                                and bmlua.uci.parse_bool(conflict_installed) then
+                        print("Experiments " .. name .. " and " .. conflict .. " conflict")
+                        print("Marking " .. conflict .. " for removal")
+                        cursor:set(EXPERIMENTS_CONFIG, conflict, 'installed', '0')
+                        cursor:save(EXPERIMENTS_CONFIG)
+                    end
+                end
+            end
+        end
+        cursor:commit(EXPERIMENTS_CONFIG)
+    end
+end
 
-opkg update
-config_load bismark-experiments
-config_foreach load_experiment experiment
+function main(arg)
+    local all_repositories = opkg.get_package_lists()
+    local managed_repositories = get_managed_repositories()
+    local unmanaged_repositories =
+            all_repositories:difference(managed_repositories)
 
-packages_to_remove=`echo $packages_to_remove | tr ' ' '\n' | sort | uniq`
-packages_to_install=`echo $packages_to_install_root $packages_to_install_tmpfs | tr ' ' '\n' | sort | uniq`
-dont_remove=`echo $packages_to_install $packages_to_remove | tr ' ' '\n' | sort | uniq -d`
-safely_remove=`echo $packages_to_remove $dont_remove | tr ' ' '\n' | sort | uniq -u`
-[ -z "`echo $safely_remove`" ] || opkg remove --force-depends $safely_remove
-[ -z "`echo $packages_to_install_root`" ] || opkg install --nodeps $packages_to_install_root 
-[ -z "`echo $packages_to_install_tmpfs`" ] || opkg install --nodeps -d ram $packages_to_install_tmpfs
+    local unmanaged_packages =
+            opkg.get_packages_in_repositories(unmanaged_repositories)
+    local managed_packages =
+            opkg.get_packages_in_repositories(managed_repositories)
+    if managed_packages:intersection(unmanaged_packages):length() > 0 then
+        print("Managed and unmanaged repositories must be disjoint!")
+        return 1
+    end
+
+    local cursor = uci.cursor()
+    remove_conflicting_experiments(cursor)
+
+    local should_install = load_experiments(cursor, managed_packages)
+    local currently_installed =
+            opkg.list_installed():intersection(managed_packages)
+    for package_name in currently_installed:difference(should_install):iter() do
+        print("removing " .. package_name)
+        opkg.remove(package_name)
+    end
+    for package_name in should_install:difference(currently_installed):iter() do
+        print("installing " .. package_name)
+        opkg.install(package_name)
+    end
+end
+
+return main(arg)

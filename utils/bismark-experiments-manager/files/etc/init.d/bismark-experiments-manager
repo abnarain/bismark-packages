@@ -1,9 +1,9 @@
 #!/bin/sh /etc/rc.common
 
-START=98
+START=99
 start() {
-    [ -x /usr/bin/setup-and-teardown-experiments ] && \
-        /usr/bin/setup-and-teardown-experiments
+    [ -x /usr/bin/merge-experiments ] && \
+        /usr/bin/merge-experiments
 }
 
 stop() {
