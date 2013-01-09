@@ -37,7 +37,7 @@ define Package/wifi_dump-tmpfs/install
 #	$(INSTALL_DIR) $(1)/tmp/bismark-uploads/wifi_dump-t
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/wifi_dump-tmpfs $(1)/usr/bin/wifi_dump.bin
 	$(INSTALL_BIN) ./files/etc/init.d/setup $(1)/etc/init.d/wifi_dump
-	$(INSTALL_BIN) ./files/etc/init.d/keep-alive $(1)/usr/bin/wifi_dump
+	$(INSTALL_BIN) ./files/usr/bin/keep-alive $(1)/usr/bin/wifi_dump
 endef
 
  
