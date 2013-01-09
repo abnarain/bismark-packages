@@ -11,7 +11,7 @@ PKG_NAME:=wifi_dump-tmpfs
 PKG_VERSION:=HEAD
 PKG_RELEASE:=1
 
-#PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=git://github.com/abnarain/wifi_dump-tmpfs.git
 PKG_SOURCE_VERSION:=$(PKG_VERSION)
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
@@ -29,10 +29,6 @@ define Package/wifi_dump-tmpfs
 	DEPENDS:=+zlib +bismark-data-transmit 
 endef
 
-define Build/Prepare
-	mkdir -p $(PKG_BUILD_DIR)
-	$(CP) ./src/* $(PKG_BUILD_DIR)
-endef
 
 define Package/wifi_dump-tmpfs/install
 	$(INSTALL_DIR) $(1)/usr/bin
