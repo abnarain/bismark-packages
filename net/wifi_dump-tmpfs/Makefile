@@ -11,8 +11,7 @@ PKG_RELEASE:=1
 PKG_VERSION:=HEAD
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=
-#git://github.com/abnarain/wifi_dump-tmpf.git
+PKG_SOURCE_URL:=git://github.com/abnarain/wifi_dump-tmpfs.git
 PKG_SOURCE_VERSION:=$(PKG_VERSION)
 PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)
 PKG_SOURCE_PROTO:=git
