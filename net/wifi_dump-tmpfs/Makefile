@@ -45,7 +45,7 @@ define Package/wifi_dump-tmpfs/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_DIR) $(1)/tmp/wifi_dump
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/wifi_dump $(1)/usr/bin/wifi_dump.bin
+	$(INSTALL_BIN) $(PKG_BUILD_DIR)/tmp/wifi_dump $(1)/usr/bin/wifi_dump.bin
 	$(INSTALL_BIN) ./files/etc/init.d/wifi_dump $(1)/etc/init.d/wifi_dump
 	$(INSTALL_BIN) ./files/usr/bin/wifi_dump $(1)/usr/bin/wifi_dump
 endef
