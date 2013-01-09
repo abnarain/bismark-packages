@@ -1,4 +1,4 @@
-#
+/
 # Copyright (C) 2006-2011 OpenWrt.org
 #
 # This is free software, licensed under the GNU General Public License v2.
@@ -36,8 +36,8 @@ define Package/wifi_dump-tmpfs/install
 	$(INSTALL_DIR) $(1)/tmp/wifi_dump
 #	$(INSTALL_DIR) $(1)/tmp/bismark-uploads/wifi_dump-t
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/wifi_dump-tmpfs $(1)/usr/bin/wifi_dump.bin
-	$(INSTALL_BIN) ./files/etc/init.d/setup $(1)/etc/init.d/wifi_dump
-	$(INSTALL_BIN) ./files/usr/bin/keep-alive $(1)/usr/bin/wifi_dump
+	$(INSTALL_BIN) ./files/etc/init.d/wifi_dump $(1)/etc/init.d/wifi_dump
+	$(INSTALL_BIN) ./files/usr/bin/wifi_dump $(1)/usr/bin/wifi_dump
 endef
 
  
