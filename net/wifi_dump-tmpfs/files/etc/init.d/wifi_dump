@@ -88,14 +88,14 @@ start(){
     fi
 
     start-stop-daemon -S \
-	-x /tmp/usr/bin/wifi_dump.bin \
+	-x /tmp/usr/bin/wifi_dump \
 	-p $PIDFILE \
 	-m -b $mon0
 
 		echo "installed on phy0 interface; now running phy1 interface"
     sleep 30
     start-stop-daemon -S \
-	-x /tmp/usr/bin/wifi_dump.bin \
+	-x /tmp/usr/bin/wifi_dump \
 	-p $PIDFILE \
 	-m -b $mon1
 }
