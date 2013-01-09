@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wifi_dump-tmpfs
-PKG_VERSION:=1.0
+PKG_VERSION:=HEAD
 PKG_RELEASE:=1
 
 #PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
@@ -40,8 +40,8 @@ define Package/wifi_dump-tmpfs/install
 	$(INSTALL_DIR) $(1)/tmp/wifi_dump
 #	$(INSTALL_DIR) $(1)/tmp/bismark-uploads/wifi_dump-t
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/wifi_dump-tmpfs $(1)/usr/bin/wifi_dump.bin
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/scripts/setup $(1)/etc/init.d/wifi_dump
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/scripts/keep-alive $(1)/usr/bin/wifi_dump
+	$(INSTALL_BIN) ./files/etc/init.d/setup $(1)/etc/init.d/wifi_dump
+	$(INSTALL_BIN) ./files/etc/init.d/keep-alive $(1)/usr/bin/wifi_dump
 endef
 
  
