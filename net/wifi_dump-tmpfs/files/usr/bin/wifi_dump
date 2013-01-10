@@ -6,5 +6,5 @@ while [ 1 ]; do
     wait $!
     trap - INT TERM
     sleep 10
-    echo "Restarting wifi_dump-tmpfs"
+    echo "Restarting wifi_dump"
 done

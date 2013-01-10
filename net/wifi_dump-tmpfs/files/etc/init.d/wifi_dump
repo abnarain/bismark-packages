@@ -33,8 +33,8 @@ start(){
        echo "Generated fresh anonymization key"
     fi
 	
-		mkdir -p /tmp/bismark-uploads/wifi_dump
-		mkdir -p /tmp/wifi_dump
+		mkdir -p /tmp/bismark-uploads/mac-analyzer
+		mkdir -p /tmp/mac-analyzer
 
     iw phy phy2 interface add phy2 type monitor flags fcsfail control otherbss 2>/dev/null
     p2=$?
