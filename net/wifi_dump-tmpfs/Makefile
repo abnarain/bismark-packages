@@ -6,7 +6,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=wifi_dump-tmpfs
+PKG_NAME:=wifi-dump-tmpfs
 PKG_RELEASE:=2
 PKG_VERSION:=HEAD
 
@@ -20,7 +20,7 @@ PKG_SOURCE_PROTO:=git
 
 include $(INCLUDE_DIR)/package.mk
 
-define Package/wifi_dump-tmpfs
+define Package/wifi-dump-tmpfs
 	SECTION:=net
 	CATEGORY:=Network
 	TITLE:=BISmark Wireless Measurements tool 
@@ -32,7 +32,7 @@ define Package/bismark-active-tmpfs/description
  This tool collects wireless traces in monitor mode. This tool is a part of infrastructure to understand wireless home networks.
 endef
 
-define Package/wifi_dump-tmpfs/install
+define Package/wifi-dump-tmpfs/install
 	$(INSTALL_DIR) $(1)/usr/bin
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/wifi_dump $(1)/usr/bin/wifi_dump.bin
@@ -41,15 +41,15 @@ define Package/wifi_dump-tmpfs/install
 endef
 
  
-define Package/wifi_dump-tmpfs/postinst
+define Package/wifi-dump-tmpfs/postinst
 #!/bin/sh
 /tmp/etc/init.d/wifi_dump enable
 /tmp/etc/init.d/wifi_dump restart
 endef
 
-define Package/wifi_dump-tmpfs/prerm
+define Package/wifi-dump-tmpfs/prerm
 #!/bin/sh
 /tmp/etc/init.d/wifi_dump stop
 endef
 
-$(eval $(call BuildPackage,wifi_dump-tmpfs))
+$(eval $(call BuildPackage,wifi-dump-tmpfs))
