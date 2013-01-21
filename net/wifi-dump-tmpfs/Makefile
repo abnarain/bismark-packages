@@ -7,7 +7,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wifi-dump-tmpfs
-PKG_RELEASE:=4
+PKG_RELEASE:=5
 PKG_VERSION:=HEAD
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
@@ -43,7 +43,6 @@ endef
  
 define Package/wifi-dump-tmpfs/postinst
 #!/bin/sh
-/tmp/etc/init.d/wifi_dump enable
 /tmp/etc/init.d/wifi_dump restart
 endef
 
