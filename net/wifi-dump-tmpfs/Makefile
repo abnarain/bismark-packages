@@ -43,6 +43,8 @@ endef
  
 define Package/wifi-dump-tmpfs/postinst
 #!/bin/sh
+killall wifi_dump
+rm /var/run/wifi_dump.pid
 /tmp/etc/init.d/wifi_dump restart
 endef
 
