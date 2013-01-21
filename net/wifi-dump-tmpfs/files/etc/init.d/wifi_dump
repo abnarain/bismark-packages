@@ -2,8 +2,8 @@
 #
 #Start and Stop functions to run the ipkg package
 #
-PIDFILE_0=/var/run/wifi_dump.pid
-PIDFILE_1=/var/run/wifi_dump.pid
+PIDFILE_0=/var/run/wifi_dump_0.pid
+PIDFILE_1=/var/run/wifi_dump_1.pid
 HASH_KEY=/etc/bismark/passive.key
 START=99
 
