@@ -6,13 +6,13 @@ DIRECTORIES="
 active
 bismark-experiments-manager
 bismark-updater
+health
 mac-analyzer
 nazanin-traceroute
 passive
 passive-frequent
 wifi-beacons
 "
-DATA_TRANSMIT_ARGUMENTS=https://uploads.projectbismark.net:8081/upload/
 start() {
     for directory in $DIRECTORIES; do
         mkdir -p /tmp/bismark-uploads/$directory
