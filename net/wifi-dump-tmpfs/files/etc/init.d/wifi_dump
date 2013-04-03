@@ -8,7 +8,6 @@ HASH_KEY=/etc/bismark/passive.key
 START=99
 
 start(){
-<<<<<<< HEAD
   
 #   wifi down
 #   rmmod ath9k
