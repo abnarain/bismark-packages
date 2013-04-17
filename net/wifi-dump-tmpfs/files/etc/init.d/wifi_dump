@@ -37,48 +37,48 @@ start(){
     mkdir -p /tmp/bismark-uploads/mac-analyzer
     mkdir -p /tmp/mac-analyzer
 
-    iw phy phy2 interface add phy2 type monitor flags fcsfail control otherbss 2>/dev/null
+    iw phy phy2 interface add phe2 type monitor flags fcsfail control otherbss 2>/dev/null
     p2=$?
     if [ "$p2" -eq "0" ];then
-      mon0='phy2'
+      mon0='phe2'
       wlan0='wlan2'
-      echo "phy2 created " 
+      echo "phe2 created " 
     else
-      echo "Err: can't creat phy2 "     
+      echo "Err: can't creat phe2 "     
     fi
     
   
-    iw phy phy3 interface add phy3 type monitor flags fcsfail control otherbss 2>/dev/null
+    iw phy phy3 interface add phe3 type monitor flags fcsfail control otherbss 2>/dev/null
     p3=$?
     if [ "$p3" -eq "0" ];then
-      mon1='phy3'
+      mon1='phe3'
       wlan1='wlan3'
-      echo "phy3 created  " 
+      echo "phe3 created  " 
     else
-      echo "Err: can't creat phy3"
+      echo "Err: can't creat phe3"
     fi
 
 
     if [  "$p3" -ne "0" ] && [ "$p2" -ne "0" ];then               
-      iw phy phy0 interface add phy0 type monitor flags fcsfail control otherbss 2>/dev/null
+      iw phy phy0 interface add phe0 type monitor flags fcsfail control otherbss 2>/dev/null
       p0=$?
       if [ "$p0" -eq "0" ];then
-        mon0='phy0'
+        mon0='phe0'
         wlan0='wlan0'
-        echo "phy0 created  " 
+        echo "phe0 created  " 
       else
-        echo "Err: can't creat phy0"
+        echo "Err: can't creat phe0"
       exit 1
       fi
     
-      iw phy phy1 interface add phy1 type monitor flags fcsfail control otherbss 2>/dev/null
+      iw phy phy1 interface add phe1 type monitor flags fcsfail control otherbss 2>/dev/null
       p1=$?
       if [ "$p1" -eq "0" ];then
-        mon1='phy1'
+        mon1='phe1'
         wlan1='wlan1'
-        echo "phy1 created  " 
+        echo "phe1 created  " 
       else
-        echo "Err: can't creat phy1"
+        echo "Err: can't creat phe1"
       exit 1
       fi
     fi
@@ -121,12 +121,12 @@ stop(){
     }
     
 
-    iw dev phy2 del 2>/dev/null
-    iw dev phy3 del 2>/dev/null
+    iw dev phe2 del 2>/dev/null
+    iw dev phe3 del 2>/dev/null
 
     
-    iw dev phy0 del 2>/dev/null
-    iw dev phy1 del 2>/dev/null
+    iw dev phe0 del 2>/dev/null
+    iw dev phe1 del 2>/dev/null
     echo "deleted the monitor interfaces"
     
 }
