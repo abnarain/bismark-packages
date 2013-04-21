@@ -53,8 +53,8 @@ start(){
     -p $PIDFILE_0 \
     -m -b $mon0
     
-    echo "installed on phy0 interface; now running phy1 interface"
-    sleep 30
+    echo "installed on phe0 interface; now running phe1 interface"
+    sleep 3
     start-stop-daemon -S \
   -x /tmp/usr/bin/wifi_dump \
   -p $PIDFILE_1 \
