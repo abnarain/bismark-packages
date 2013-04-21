@@ -74,8 +74,7 @@ stop(){
   rm -f $PIDFILE_1
 
     }
-   	iw dev phy0 del 2>/dev/null
-	iw dev phy1 del 2>/dev/null
+
     iw dev phe0 del 2>/dev/null
     iw dev phe1 del 2>/dev/null
     echo "deleted the monitor interfaces"
