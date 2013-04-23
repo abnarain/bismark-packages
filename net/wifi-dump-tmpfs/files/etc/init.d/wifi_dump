@@ -97,18 +97,12 @@ stop(){
     p1=$?
     if [ "$p1" -eq "0" ];then
         echo "phe0 turned down"
-    else
-        echo "Err: can't turn down phe0"
-        exit 1
     fi
     
     ifconfig phe1 down 
     p1=$?
     if [ "$p1" -eq "0" ];then
         echo "phe1 turned down"
-    else
-        echo "Err: can't turn down phe1 "
-        exit 1
     fi
 
     iw dev phe0 del 2>/dev/null
