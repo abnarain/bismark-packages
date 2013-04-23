@@ -22,12 +22,21 @@ start(){
     p0=$?
     if [ "$p0" -eq "0" ];then
         mon0='phe0'
-        echo "phe0 created  " 
+        echo "phe0 created  "
     else
         echo "Err: can't creat phe0"
         exit 1
     fi
     
+    ifconfig $mon0 up 
+    p0=$?
+    if [ "$p0" -eq "0" ];then
+        echo "radio 0 interface  up"
+    else
+        echo "Err: can't turn radio 0 interface  up"
+        exit 1
+    fi    
+
     iw phy phy1 interface add phe1 type monitor flags fcsfail control otherbss 2>/dev/null
     p1=$?
     if [ "$p1" -eq "0" ];then
@@ -37,6 +46,16 @@ start(){
         echo "Err: can't creat phe1"
         exit 1
     fi
+
+    ifconfig $mon1 up 
+    p1=$?
+    if [ "$p1" -eq "0" ];then
+        echo "radio 0 interface  up"
+    else
+        echo "Err: can't turn radio 0 interface  up"
+        exit 1
+    fi
+
 #check the argument
     if [ -f $PIDFILE_0 ]; then
         echo "pidfile $PIDFILE_0 already exists; mac analyzer already running"
@@ -74,10 +93,41 @@ stop(){
   rm -f $PIDFILE_1
 
     }
+    ifconfig phe0 down 
+    p1=$?
+    if [ "$p1" -eq "0" ];then
+        echo "phe0 turned down"
+    else
+        echo "Err: can't turn down phe0"
+        exit 1
+    fi
+    
+    ifconfig phe1 down 
+    p1=$?
+    if [ "$p1" -eq "0" ];then
+        echo "phe1 turned down"
+    else
+        echo "Err: can't turn down phe1 "
+        exit 1
+    fi
 
     iw dev phe0 del 2>/dev/null
+    p1=$?
+    if [ "$p1" -eq "0" ];then
+        echo "deleted phe0 interface "
+    else
+        echo "Err: can't delete interface phe0"
+        exit 1
+    fi
+
     iw dev phe1 del 2>/dev/null
-    echo "deleted the monitor interfaces"
+    p1=$?
+    if [ "$p1" -eq "0" ];then
+        echo "deleted phe1 interface "
+    else
+        echo "Err: can't delete interface phe1 "
+        exit 1
+    fi
     
 }
 
