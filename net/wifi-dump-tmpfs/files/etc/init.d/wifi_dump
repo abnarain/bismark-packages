@@ -93,17 +93,17 @@ stop(){
   rm -f $PIDFILE_1
 
     }
-    ifconfig phe0 down 
-    p1=$?
-    if [ "$p1" -eq "0" ];then
-        echo "phe0 turned down"
-    fi
+#    ifconfig phe0 down 
+#    p1=$?
+#    if [ "$p1" -eq "0" ];then
+#        echo "phe0 turned down"
+#    fi
     
-    ifconfig phe1 down 
-    p1=$?
-    if [ "$p1" -eq "0" ];then
-        echo "phe1 turned down"
-    fi
+#    ifconfig phe1 down 
+#    p1=$?
+#    if [ "$p1" -eq "0" ];then
+#        echo "phe1 turned down"
+#    fi
 
     iw dev phe0 del 2>/dev/null
     p1=$?
